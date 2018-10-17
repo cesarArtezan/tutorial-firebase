@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Tutorial Firebase</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Firebase App is always required and must be first -->
+  <script src="https://www.gstatic.com/firebasejs/5.4.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.4.1/firebase-firestore.js"></script>
+</head>
+
+<body>
+  <header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">FireBase</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <!-- link a paginas -->
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="./index.html">Clientes <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./machines/machines.html">Máquinas</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Begin page content -->
+  <main role="main" class="container">
+    <br>
+    <h1 class="mt-5">Ejemplo FireBase NoSQL</h1>
+    <br>
+  </main>
+
+  <div class="container">
+    <div class="row">
+      <!-- Listado -->
+      <div class="col-md-4 order-md-2 mb-4">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Lista de Clientes</span>
+          <span id="numOfCustomers" class="badge badge-secondary badge-pill"></span>
+        </h4>
+        <ul id="list" class="list-group mb-3">
+        </ul>
+        <!-- solo se ve cuando se edita -->
+        <div class="d-flex flex-row-reverse">
+          <div hidden id="resetButton" onclick="reset()" class="p-2"><button class="btn btn-primary"><i class="fa fa-plus-circle"></i>
+              Nuevo</button></div>
+        </div>
+
+      </div>
+      <!-- /Listado -->
+      <!-- Formulario -->
+      <div class="col-md-8 order-md-1">
+        <h4 class="mb-3">Clientes</h4>
+        <div class="needs-validation" novalidate>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="firstName">Nombre</label>
+              <input type="text" class="form-control" id="firstName" placeholder="" required>
+              <div class="invalid-feedback">
+                Nombre es obligatorio
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label>Apellido</label>
+              <input type="text" class="form-control" id="lastName" placeholder="" required>
+              <div class="invalid-feedback">
+                Apellido es obligatorio
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="businessName">Razon Social</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="businessName" placeholder="" required>
+              <div class="invalid-feedback" style="width: 100%;">
+                Razon Social es obligatorio
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="address">Dirección</label>
+            <input type="text" class="form-control" id="address" placeholder="" required>
+            <div class="invalid-feedback" style="width: 100%;">
+              Dirección es obligatorio
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="customerType">Tipo de Cliente</label>
+          <input type="text" class="form-control" id="customerType" placeholder="" required>
+          <div class="invalid-feedback">
+            Tipo de Cliente es obligatorio
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="discount">Descuento</label>
+          <input type="number" class="form-control" id="discount" placeholder="">
+        </div>
+
+        <!-- <div class="mb-3">
+          <label for="machines">Asignar Máquinas</label>
+          <select id="machines" value="" class="form-control" multiple>
+            <option>--</option>
+          </select>
+        </div> -->
+
+        <hr class="mb-4">
+        <!-- boton que llama a funcion saveDoc para guardar  -->
+        <button onclick="saveDoc()" class="btn btn-primary btn-lg btn-block" id="saveButton">Registrar Nuevo Cliente</button>
+        <!-- boton que llama a funcion saveDoc para guardar  -->
+        <button onclick="updateById()" hidden class="btn btn-secondary btn-lg btn-block" id="editButton">Editar Cliente</button>
+        <!-- /formulario -->
+      </div>
+
+    </div>
+  </div>
+  <!-- Archivo de JS -->
+  <script src="main.js"></script>
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+
+</body>
+
+
+</html>
